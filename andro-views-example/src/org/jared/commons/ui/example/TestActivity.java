@@ -1,5 +1,8 @@
-package org.jared.commons.ui;
+package org.jared.commons.ui.example;
 
+
+import org.jared.commons.ui.R;
+import org.jared.commons.ui.WorkspaceView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,9 +28,9 @@ public class TestActivity extends Activity {
     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     WorkspaceView work = new WorkspaceView(this, null);
-    // Car il y a toujours un petit décalage du doigt même lors d'un scrolling vertical
+    // Car il y a toujours un petit dï¿½calage du doigt mï¿½me lors d'un scrolling vertical
     work.setTouchSlop(32);
-    // Chargement de l'image d fond (peut être enlevée)
+    // Chargement de l'image d fond (peut ï¿½tre enlevï¿½e)
     Bitmap backGd = BitmapFactory.decodeResource(getResources(), R.drawable.background_black_1280x1024);
     work.loadWallpaper(backGd);
     
