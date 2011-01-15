@@ -1,3 +1,5 @@
+package org.jared.commons.ui;
+
 /**
      * Copyright 2010 Eric Taix (eric.taix@gmail.com) Licensed under the Apache License, Version 2.0 (the "License"); you
      * may not use this file except in compliance with the License. You may obtain a copy of the License at
@@ -8,10 +10,7 @@
      */
 
     import android.content.Context;
-    import android.graphics.Bitmap;
-    import android.graphics.Canvas;
-    import android.graphics.Paint;
-    import android.graphics.RectF;
+import android.graphics.*;
     import android.os.Parcel;
     import android.os.Parcelable;
     import android.util.AttributeSet;
@@ -23,7 +22,7 @@
     import android.view.ViewGroup;
     import android.view.ViewParent;
     import android.view.animation.Interpolator;
-    import android.widget.Scroller;
+import android.widget.Scroller;
 
     /**
      * The workspace is a wide area with a infinite number of screens. Each screen contains a view. A workspace is meant to
@@ -156,11 +155,11 @@
             mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
 
             selectedTabPaint = new Paint();
-            selectedTabPaint.setColor(getResources().getColor(R.color.RED));
+            selectedTabPaint.setColor(Color.RED);
             selectedTabPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
             tabIndicatorBackgroundPaint = new Paint();
-            tabIndicatorBackgroundPaint.setColor(getResources().getColor(R.color.GRAY));
+            tabIndicatorBackgroundPaint.setColor(Color.GRAY);
             tabIndicatorBackgroundPaint.setStyle(Paint.Style.FILL);
         }
 
