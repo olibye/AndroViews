@@ -371,7 +371,9 @@ import android.widget.Scroller;
                     childLeft += childWidth;
                 }
             }
-            load.onLoad();
+            if (load!=null) {
+            	load.onLoad();
+            }
         }
 
         @Override
