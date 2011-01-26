@@ -57,6 +57,8 @@ import android.widget.Scroller;
         private static final int TAB_INDICATOR_HEIGHT_PCT = 2;
         private RectF selectedTab;
 
+        private boolean showTabIndicator = false;
+
 
         // The scroller which scroll each view
         private Scroller scroller;
@@ -165,11 +167,17 @@ import android.widget.Scroller;
 
         /**
          * Set a new distance that a touch can wander before we think the user is scrolling in pixels slop<br/>
-         * 
+         *
          * @param touchSlopP
          */
         public void setTouchSlop(int touchSlopP) {
             touchSlop = touchSlopP;
+        }
+
+        public void setShowTabIndicator(boolean showIndicator){
+        	this.showTabIndicator = showIndicator;
+        	requestLayout();
+        	invalidate();
         }
 
         /**
@@ -280,8 +288,10 @@ import android.widget.Scroller;
                     }
                 }
             }
-            updateTabIndicator();
-            canvas.drawBitmap(bitmap, getScrollX(), getMeasuredHeight()*(100-TAB_INDICATOR_HEIGHT_PCT)/100, paint);
+            if (showTabIndicator){
+            	updateTabIndicator();
+            	canvas.drawBitmap(mTabBitmap, getScrollX(), getMeasuredHeight()*(100-TAB_INDICATOR_HEIGHT_PCT)/100, paint);
+            }
 
         }
 
@@ -309,9 +319,13 @@ import android.widget.Scroller;
             // The children are given the same width and height as the workspace
             final int count = getChildCount();
             for (int i = 0; i < count; i++) {
-                int adjustedHeightMeasureSpec = MeasureSpec.makeMeasureSpec(height*(100-TAB_INDICATOR_HEIGHT_PCT)/100, heightMode);
-                getChildAt(i).measure(widthMeasureSpec,adjustedHeightMeasureSpec);
 
+            	if (showTabIndicator){
+            		final int adjustedHeightMeasureSpec = MeasureSpec.makeMeasureSpec(height*(100-TAB_INDICATOR_HEIGHT_PCT)/100, heightMode);
+            		getChildAt(i).measure(widthMeasureSpec,adjustedHeightMeasureSpec);
+            	}else{
+            		getChildAt(i).measure(widthMeasureSpec,heightMeasureSpec);
+            	}
             }
 
             // Compute wallpaper
@@ -333,7 +347,7 @@ import android.widget.Scroller;
             invalidate();
         }
 
-        Bitmap bitmap;
+        Bitmap mTabBitmap;
 
         private OnLoadListener load;
 
@@ -341,17 +355,20 @@ import android.widget.Scroller;
     private int lastEvHashCode;
 
         private void updateTabIndicator(){
-            int width = getMeasuredWidth();
-            int height = getMeasuredHeight();
+        	if (!showTabIndicator){
+        		return;
+        	}
+            final int width = getMeasuredWidth();
+            final int height = getMeasuredHeight();
 
             //For drawing in its own bitmap:
             bar = new RectF(0, 0, width, (TAB_INDICATOR_HEIGHT_PCT*height/100));
 
-            int startPos = getScrollX()/(getChildCount());
+            final int startPos = getScrollX()/(getChildCount());
             selectedTab = new RectF(startPos, 0, startPos+width/getChildCount(), (TAB_INDICATOR_HEIGHT_PCT*height/100));
 
-            bitmap = Bitmap.createBitmap(width, (TAB_INDICATOR_HEIGHT_PCT*height/100), Bitmap.Config.ARGB_8888);
-            canvas = new Canvas(bitmap);
+            mTabBitmap = Bitmap.createBitmap(width, (TAB_INDICATOR_HEIGHT_PCT*height/100), Bitmap.Config.ARGB_8888);
+            canvas = new Canvas(mTabBitmap);
             canvas.drawRoundRect(bar,0,0, tabIndicatorBackgroundPaint);
             canvas.drawRoundRect(selectedTab, 5,5, selectedTabPaint);
         }
