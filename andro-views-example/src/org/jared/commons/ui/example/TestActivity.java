@@ -32,7 +32,7 @@ public class TestActivity extends Activity {
     work.setTouchSlop(32);
     // Chargement de l'image d fond (peut �tre enlev�e)
     Bitmap backGd = BitmapFactory.decodeResource(getResources(), R.drawable.background_black_1280x1024);
-    work.loadWallpaper(backGd);
+    //work.loadWallpaper(backGd);
     
     ListView lv1 = (ListView) inflater.inflate(R.layout.list, null, false);
     lv1.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lv_arr));
