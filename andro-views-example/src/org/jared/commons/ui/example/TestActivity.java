@@ -5,11 +5,9 @@ import org.jared.commons.ui.R;
 import org.jared.commons.ui.WorkspaceView;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,21 +23,19 @@ public class TestActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    setContentView(R.layout.main);
 
-    WorkspaceView work = new WorkspaceView(this, null);
+    WorkspaceView work = (WorkspaceView) findViewById(R.id.workspace);
     // Car il y a toujours un petit d�calage du doigt m�me lors d'un scrolling vertical
     work.setTouchSlop(32);
     // Chargement de l'image d fond (peut �tre enlev�e)
     Bitmap backGd = BitmapFactory.decodeResource(getResources(), R.drawable.background_black_1280x1024);
     //work.loadWallpaper(backGd);
     
-    ListView lv1 = (ListView) inflater.inflate(R.layout.list, null, false);
+    ListView lv1 = (ListView) findViewById(R.id.list1);
     lv1.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lv_arr));
-    ListView lv2 = (ListView) inflater.inflate(R.layout.list, null, false);
+    ListView lv2 = (ListView) findViewById(R.id.list2);
     lv2.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lv_arr2));
-    View v1= inflater.inflate(R.layout.relative_layout, null, false);
-    
     
     // Just to test ListView listener: OnItemClick AND OnItemLongListener
     lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -55,12 +51,5 @@ public class TestActivity extends Activity {
         return true;
       }
     });
-    
-    // Add views to the workspace view
-    work.addView(lv1);
-    work.addView(lv2);
-    work.addView(v1);
-
-    setContentView(work);
   }
 }
