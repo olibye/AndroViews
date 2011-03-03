@@ -393,9 +393,9 @@ public class WorkspaceView extends ViewGroup {
                  * Locally do absolute value. mLastMotionX is set to the y value
                  * of the down event.
                  */
-                final int pointerIndex = ev.findPointerIndex(mActivePointerId);
-                final float x = ev.getX(pointerIndex);
-                final float y = ev.getY(pointerIndex);
+                final int pointerIndex = MotionEventWrapper.findPointerIndex(ev, mActivePointerId);
+                final float x = MotionEventWrapper.getX(ev, pointerIndex);
+                final float y = MotionEventWrapper.getY(ev, pointerIndex);
                 final int xDiff = (int) Math.abs(x - mLastMotionX);
                 final int yDiff = (int) Math.abs(y - mLastMotionY);
 
@@ -432,7 +432,7 @@ public class WorkspaceView extends ViewGroup {
                 // Remember location of down touch
                 mLastMotionX = x;
                 mLastMotionY = y;
-                mActivePointerId = ev.getPointerId(0);
+                mActivePointerId = MotionEventWrapper.getPointerId(ev, 0);
                 mAllowLongPress = true;
 
                 /*
@@ -470,20 +470,22 @@ public class WorkspaceView extends ViewGroup {
     private void onSecondaryPointerUp(MotionEvent ev) {
         final int pointerIndex = (ev.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >>
                 MotionEvent.ACTION_POINTER_ID_SHIFT;
-        final int pointerId = ev.getPointerId(pointerIndex);
+        final int pointerId = MotionEventWrapper.getPointerId(ev, pointerIndex);
         if (pointerId == mActivePointerId) {
             // This was our active pointer going up. Choose a new
             // active pointer and adjust accordingly.
             // TODO: Make this decision more intelligent.
             final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-            mLastMotionX = ev.getX(newPointerIndex);
-            mLastMotionY = ev.getY(newPointerIndex);
-            mActivePointerId = ev.getPointerId(newPointerIndex);
+            mLastMotionX = MotionEventWrapper.getX(ev, newPointerIndex);
+            mLastMotionY = MotionEventWrapper.getY(ev, newPointerIndex);
+            mActivePointerId = MotionEventWrapper.getPointerId(ev, newPointerIndex);
             if (mVelocityTracker != null) {
                 mVelocityTracker.clear();
             }
         }
     }
+    
+
 
     /**
      * If one of our descendant views decides that it could be focused now, only
@@ -558,7 +560,7 @@ public class WorkspaceView extends ViewGroup {
 
             // Remember where the motion event started
             mLastMotionX = ev.getX();
-            mActivePointerId = ev.getPointerId(0);
+            mActivePointerId = MotionEventWrapper.getPointerId(ev, 0);
             if (mTouchState == TOUCH_STATE_SCROLLING) {
                 enableChildrenCache(mCurrentScreen - 1, mCurrentScreen + 1);
             }
@@ -566,8 +568,8 @@ public class WorkspaceView extends ViewGroup {
         case MotionEvent.ACTION_MOVE:
             if (mTouchState == TOUCH_STATE_SCROLLING) {
                 // Scroll to follow the motion event
-                final int pointerIndex = ev.findPointerIndex(mActivePointerId);
-                final float x = ev.getX(pointerIndex);
+                final int pointerIndex = MotionEventWrapper.findPointerIndex(ev, mActivePointerId);
+                final float x = MotionEventWrapper.getX(ev, pointerIndex);
                 final float deltaX = mLastMotionX - x;
                 mLastMotionX = x;
 
@@ -708,6 +710,39 @@ public class WorkspaceView extends ViewGroup {
         final SavedState state = new SavedState(super.onSaveInstanceState());
         state.currentScreen = mCurrentScreen;
         return state;
+    }
+    
+    public boolean awakenScrollBars(){
+    	try {
+    		Method awakenScrollBars = ViewGroup.class.getMethod("awakenScrollBars");
+    		return ((Boolean) awakenScrollBars.invoke(this)).booleanValue();
+    	}catch (NoSuchMethodException e){
+    		// that's fine.
+    		return true;
+    	} catch (IllegalArgumentException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
+    public boolean awakenScrollBars(int duration){
+    	
+    	try {
+    		Method awakenScrollBars = View.class.getMethod("awakenScrollBars", int.class);
+    		return ((Boolean) awakenScrollBars.invoke(this, duration)).booleanValue();
+    	}catch (NoSuchMethodException e){
+    		// that's fine.
+    		return true;
+    	} catch (IllegalArgumentException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
     }
 
     @Override
