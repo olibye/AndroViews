@@ -16,6 +16,11 @@
 
 package org.jared.commons.ui;
 
+import info.staticfree.android.utils.MotionEventWrapper;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
