@@ -8,13 +8,17 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class TestActivity extends Activity {
+public class TestActivity extends Activity implements OnClickListener {
+	private static final String TAG = TestActivity.class.getSimpleName();
 
   private String lv_arr[] = { "Android", "iPhone", "BlackBerry", "AndroidPeople", "Symbian", "iPad","Windows Mobile", "Sony","HTC","Motorola" };
   private String lv_arr2[] = { "Eric Taix", "eric.taix@gmail.com" };
@@ -51,5 +55,21 @@ public class TestActivity extends Activity {
         return true;
       }
     });
+    findViewById(R.id.btn1).setOnClickListener(this);
+    findViewById(R.id.btn2).setOnClickListener(this);
+    findViewById(R.id.btn3).setOnClickListener(this);
+    findViewById(R.id.btn4).setOnClickListener(this);
   }
+  
+  @Override
+	public void onClick(View v) {
+	  switch (v.getId()){
+	  case R.id.btn1:
+	  case R.id.btn2:
+	  case R.id.btn3:
+	  case R.id.btn4:
+		  Log.d(TAG, "Pressed "+ ((Button)v).getText());
+		  break;
+	  }
+	}
 }

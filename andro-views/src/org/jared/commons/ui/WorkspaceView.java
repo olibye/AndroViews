@@ -43,8 +43,8 @@ import android.widget.Scroller;
  * A workspace is meant to be used with a fixed width only.
  */
 public class WorkspaceView extends ViewGroup {
-    @SuppressWarnings({"UnusedDeclaration"})
-    private static final String TAG = "Launcher.Workspace";
+    @SuppressWarnings("unused")
+    private static final String TAG = WorkspaceView.class.getSimpleName();
     private static final int INVALID_SCREEN = -1;
     
     /**
