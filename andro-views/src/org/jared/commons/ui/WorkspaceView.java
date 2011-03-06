@@ -666,6 +666,11 @@ public class WorkspaceView extends ViewGroup {
     private void snapToScreen(int whichScreen, int velocity, boolean settle) {
         //if (!mScroller.isFinished()) return;
     	int mScrollX = getScrollX();
+        // if we're already at the requested screen and in the right position,
+        // consider our job done.
+        if (mCurrentScreen == whichScreen && mScrollX == getLeft()){
+            return;
+        }
 
         whichScreen = Math.max(0, Math.min(whichScreen, getChildCount() - 1));
         
