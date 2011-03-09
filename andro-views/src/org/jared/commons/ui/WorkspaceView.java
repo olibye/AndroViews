@@ -200,10 +200,10 @@ import android.widget.Scroller;
          * 
          * @param currentScreen
          */
-        public void setCurrentScreen(int currentScreen) {
+        public void setCurrentScreen(int theCurrentScreen) {
 
             if (!scroller.isFinished()) scroller.abortAnimation();
-            currentScreen = Math.max(0, Math.min(currentScreen, getChildCount()));
+            currentScreen = Math.max(0, Math.min(theCurrentScreen, getChildCount()));
             scrollTo(currentScreen * getWidth(), 0);
             Log.d("workspace", "setCurrentScreen: width is " + getWidth());
             invalidate();
